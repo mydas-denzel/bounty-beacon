@@ -1,7 +1,13 @@
 FROM eclipse-temurin:25-jdk-alpine AS build
 WORKDIR /app
+
+# Install Maven via Alpine's package manager
+RUN apk add --no-cache maven
+
 COPY . .
-RUN ./mvnw clean package -DskipTests
+
+# Use standard 'mvn' instead of the './mvnw' wrapper
+RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
