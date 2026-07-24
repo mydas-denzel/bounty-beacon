@@ -1,8 +1,8 @@
 spring:
   application:
     name: bounty-beacon
-  profiles:
-    active: dev
+  #profiles:
+    #active: dev
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:bountybeacon}
     username: ${DB_USER:postgres}

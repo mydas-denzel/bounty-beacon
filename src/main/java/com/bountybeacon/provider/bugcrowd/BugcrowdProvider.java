@@ -23,9 +23,9 @@ public class BugcrowdProvider implements Provider {
 
     @Override
     public List<Program> fetchPrograms() {
-        log.info("Fetching programs from Bugcrowd");
+        log.info("Fetching programs from Bugcrowd via GitHub aggregator");
         try {
-            BugcrowdResponse response = client.fetchPrograms().block();
+            BugcrowdProgram[] response = client.fetchPrograms().block();
             return mapper.toPrograms(response);
         } catch (Exception e) {
             log.error("Error fetching programs from Bugcrowd", e);

@@ -28,8 +28,10 @@ public class Program {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
     private String url;
 
+    @Column(columnDefinition = "TEXT")
     private String logoUrl;
 
     private boolean bounty;

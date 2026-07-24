@@ -7,7 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.util.List;
 
 @Slf4j
@@ -31,8 +34,8 @@ public class DiscordNotificationService implements NotificationService {
 
         DiscordEmbed embed = DiscordEmbed.builder()
                 .title(title)
-                .description(program.getDescription() != null && program.getDescription().length() > 250 
-                        ? program.getDescription().substring(0, 250) + "..." 
+                .description(program.getDescription() != null && program.getDescription().length() > 250
+                        ? program.getDescription().substring(0, 250) + "..."
                         : program.getDescription())
                 .url(program.getUrl())
                 .color(color)
@@ -49,6 +52,9 @@ public class DiscordNotificationService implements NotificationService {
                 .build();
 
         discordClient.sendWebhook(webhookUrl, request)
+                // Add retry logic with exponential backoff specifically for 429 errors
+                .retryWhen(Retry.backoff(5, Duration.ofSeconds(2))
+                        .filter(throwable -> throwable instanceof WebClientResponseException.TooManyRequests))
                 .doOnError(e -> log.error("Failed to send Discord notification", e))
                 .subscribe();
     }

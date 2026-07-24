@@ -1,8 +1,8 @@
 package com.bountybeacon.provider.bugcrowd;
 
 import com.bountybeacon.util.Constants;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -11,20 +11,20 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class BugcrowdClient {
     private final WebClient webClient;
+    private final ObjectMapper objectMapper; // Inject Jackson
 
-    @Value("${provider.bugcrowd.api-key:}")
-    private String apiKey;
-
-    public Mono<BugcrowdResponse> fetchPrograms() {
+    public Mono<BugcrowdProgram[]> fetchPrograms() {
         return webClient.get()
-                .uri(Constants.BUGCROWD_URL + "/programs")
-                .headers(headers -> {
-                    if (!apiKey.isEmpty()) {
-                        headers.setBearerAuth(apiKey);
-                        headers.set("Accept", "application/vnd.bugcrowd.v4+json");
-                    }
-                })
+                .uri(Constants.BUGCROWD_URL)
                 .retrieve()
-                .bodyToMono(BugcrowdResponse.class);
+                .bodyToMono(String.class) // 1. Fetch as a plain String
+                .map(jsonString -> {
+                    try {
+                        // 2. Parse the string manually into your array
+                        return objectMapper.readValue(jsonString, BugcrowdProgram[].class);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Failed to parse Bugcrowd JSON", e);
+                    }
+                });
     }
 }

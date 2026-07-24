@@ -1,3 +1,4 @@
+/*
 package com.bountybeacon.provider.bugcrowd;
 
 import lombok.Data;
@@ -22,3 +23,6 @@ public class BugcrowdResponse {
         private boolean license_key_required;
     }
 }
+
+
+ */
