@@ -12,13 +12,13 @@ spring:
 
 provider:
   hackerone:
-    username: ${H1_USERNAME:xxmaverickxx}
-    api-key: ${H1_API_KEY:XQjwuO9UGvfZMAxhNaK+D2hf7CLcdlagYbhNXE8Ub44=}
+    username: ${H1_USERNAME:your-hackerone-username}
+    api-key: ${H1_API_KEY: your-api-key}
   bugcrowd:
-    api-key: ${BC_API_KEY:}
+    api-key: ${BC_API_KEY: your-api-key}
   intigriti:
-    api-key: ${INT_API_KEY:1E2D7FE65056CC83A52B28C82820C173B85078F15877187D03B44BF98E0775B3-1}
+    api-key: your-api-key}
 
 notification:
   discord:
-    webhook-url: ${DISCORD_WEBHOOK_URL:https://discord.com/api/webhooks/1529985368781226085/dSfhcXZ53G0DgRvR3yOqTc1sT1coBvVfaAG076m6oAdQI8B69Moidkaeu4RfKx7nVby_}
+    webhook-url: ${DISCORD_WEBHOOK_URL:"https://discord.com/api/webhooks/....."}
